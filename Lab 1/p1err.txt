@@ -1,9 +1,6 @@
 {
-    var a : Nmber, i : Number
+    var a : String, 1i : Number
 
-    a is INPUT
+    a is "My i string
 
-    for (i is 1; i GL a; i is i SUM 1)
-
-        DISPLAY i
 }
