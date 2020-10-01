@@ -1,0 +1,9 @@
+{
+    var a : Nmber, i : Number
+
+    a is INPUT
+
+    for (i is 1; i GL a; i is i SUM 1)
+
+        DISPLAY i
+}

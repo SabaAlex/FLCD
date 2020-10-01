@@ -1,0 +1,14 @@
+{
+    var a : Number, b : Number, counter : Number, gcd : Number
+
+    a is INPUT
+    b is INPUT
+
+    for (i is 1; i LE a AND i LE b; i is i SUM 1)
+
+        ? (a MODULO i EQ 0 AND b MODULO i EQ 0)
+
+            gcd is i
+
+    OUTPUT gcd
+}

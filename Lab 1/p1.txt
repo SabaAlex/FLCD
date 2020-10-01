@@ -1,0 +1,19 @@
+{
+    var a : Number, b : Number
+
+    var max : Number
+
+    a is INPUT
+
+    b is INPUT
+
+
+    ? (a GT b)
+        max is a
+    
+    !?
+        max is b
+
+    OUTPUT max
+
+}

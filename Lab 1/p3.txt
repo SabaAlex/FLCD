@@ -1,0 +1,17 @@
+{
+    var number : Number..., length : Number, counter : Number
+
+    length is INPUT
+
+    var sumOfNumbers : Number
+
+    var inputNumber : Number
+
+    for (i is 1; i LE length; i is i SUM 1)
+
+        inputNumber is INPUT
+
+        sumOfNumbers is inputNumber SUM sumOfNumbers
+
+    OUTPUT sumOfNumbers
+}
