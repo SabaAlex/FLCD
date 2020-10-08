@@ -1,18 +1,18 @@
 {
-    var a : Number, b : Number
+    var a : Number, b : Number;
 
-    var max : Number
+    var max : Number;
 
-    a is INPUT
+    a = INPUT;
 
-    b is INPUT
+    b = INPUT;
 
 
-    ? (a GT b)
-        max is a
+    if (a > b)
+        max = a;
     
-    !?
-        max is b
+    else
+        max = b;
 
     OUTPUT max
 

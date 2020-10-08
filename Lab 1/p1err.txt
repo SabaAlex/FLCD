@@ -1,6 +1,6 @@
 {
-    var a : String, 1i : Number
+    var a : String, 1i : Number;
 
-    a is "My i string
+    a is "My i string;
 
 }

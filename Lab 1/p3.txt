@@ -1,17 +1,20 @@
 {
-    var number : Number..., length : Number, counter : Number
+    var number : Number...(10), length : Number, counter : Number;
 
-    length is INPUT
+    length is INPUT;
 
-    var sumOfNumbers : Number
+    var sumOfNumbers : Number;
 
-    var inputNumber : Number
+    var inputNumber : Number;
 
-    for (i is 1; i LE length; i is i SUM 1)
+    for (var i : Number = 1; i <= length; i = i + 1)
+	{
 
-        inputNumber is INPUT
+		inputNumber = INPUT;
 
-        sumOfNumbers is inputNumber SUM sumOfNumbers
+        	sumOfNumbers = inputNumber + sumOfNumbers;
+	}
 
-    OUTPUT sumOfNumbers
+        
+    OUTPUT sumOfNumbers;
 }

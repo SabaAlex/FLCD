@@ -1,0 +1,41 @@
+program ::= cmpdstmt
+
+declList ::=  "var" (declaration | declareAndAsignStmt) {"," (declaration | declareAndAsignStmt)}
+
+declaration ::= identifier ":" type
+
+declareAndAsignStmt ::= declaration "=" expression
+
+typeSimple ::= "String" | "Char" | "Number"
+
+arrayDecl ::= typeSimple"..." "(" posNumber ")"
+
+type  ::= typeSimple | arrayDecl
+
+cmpdStmt ::= "{" stmtlist "}"
+
+stmtlist ::= stmt | stmt "\n" stmtlist
+
+stmt ::= (simplstmt ";" | declList ";" | structstmt)
+
+simplStmt ::= assignStmt | iostmt
+
+assignStmt ::= identifier "=" expression
+
+expression ::= expression ("+"|"-") term | term
+
+term ::= term ("*" | "/" | "%") factor | factor
+
+factor ::= "(" expression ")" | identifier | const
+
+ioStmt ::= "INPUT" | "OUTPUT" " " identifier
+
+structStmt ::= ifStmt | forStmt
+
+ifStmt ::= "if" condition "\n" stmt "else" (stmt | cmpdStmt)
+
+forStmt ::= "for(" (assignStmt | declList)";" condition ";" assignStmt ")" cmpdStmt
+
+condition ::= expression RELATION expression
+
+RELATION ::= "<" | "<=" | "is" | "!is" | ">=" | ">" | "AND" | "OR"

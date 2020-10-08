@@ -1,0 +1,49 @@
+Alphabet:
+
+    a. Upper (A-Z) and lower case letters (a-z) of the English alphabet
+
+    b. Decimal digits (0-9)
+
+    c. "_"
+
+Lexic:
+
+    a.Special symbols, representing:
+
+        operators: + - * / % = < <= = => is AND OR !is
+
+        separators: space tab ; , () \n "" ''
+
+        reservedWords: ... char const else if Number INPUT var for OUTPUT : String Char {}
+
+    b.identifiers
+
+        identifier ::= letter | letter{(letter | digit)}
+
+        lowerLetter ::= "a" | "b" | ...| "z"
+        
+        letter ::=  "A" | "B" | ...| "Z" | lowerLetter
+
+        digit ::= "0" | "1" |...| "9"
+
+    c.constants
+
+        1.number:
+
+            num := digit{num}
+
+            posNumber := num
+            
+            numConst := "-"num | posNumber
+
+        2.character
+
+            character := 'letter'|'digit'
+
+        3.string
+
+            constchar := "string"
+
+            string := lowerLetter{string}
+
+            char := letter|digit

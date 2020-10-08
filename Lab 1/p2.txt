@@ -1,14 +1,14 @@
 {
-    var a : Number, b : Number, counter : Number, gcd : Number
+    var a : Number, b : Number, counter : Number, gcd : Number;
 
-    a is INPUT
-    b is INPUT
+    a = INPUT;
+    b = INPUT;
 
     for (i is 1; i LE a AND i LE b; i is i SUM 1)
 
-        ? (a MODULO i EQ 0 AND b MODULO i EQ 0)
+        if (a %i == 0 AND b %i == 0)
 
-            gcd is i
+            gcd = i;
 
-    OUTPUT gcd
+    OUTPUT gcd;
 }
