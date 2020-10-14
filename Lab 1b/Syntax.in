@@ -14,9 +14,9 @@ type  ::= typeSimple | arrayDecl
 
 cmpdStmt ::= "{" stmtlist "}"
 
-stmtlist ::= stmt | stmt "\n" stmtlist
+stmtlist ::= (stmt | stmt stmtlist)
 
-stmt ::= (simplstmt ";" | declList ";" | structstmt)
+stmt ::= (simplStmt ";" | declList ";" | structstmt)
 
 simplStmt ::= assignStmt | iostmt
 
@@ -28,13 +28,13 @@ term ::= term ("*" | "/" | "%") factor | factor
 
 factor ::= "(" expression ")" | identifier | const
 
-ioStmt ::= "INPUT" | "OUTPUT" " " identifier
+ioStmt ::= "INPUT" | "OUTPUT" " " (identifier | const)
 
 structStmt ::= ifStmt | forStmt
 
-ifStmt ::= "if" condition "\n" stmt "else" (stmt | cmpdStmt)
+ifStmt ::= "if(" condition ")" (stmt | cmpdStmt) "else" (stmt | cmpdStmt)
 
-forStmt ::= "for(" (assignStmt | declList)";" condition ";" assignStmt ")" cmpdStmt
+forStmt ::= "for(" (assignStmt | declList) condition ";" assignStmt ")" (stmt | cmpdStmt)
 
 condition ::= expression RELATION expression
 

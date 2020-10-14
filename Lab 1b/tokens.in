@@ -37,5 +37,5 @@ Char
 INPUT 
 is
 !is
-identifier
-const
+identifier | 1
+const | 0
