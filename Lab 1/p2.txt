@@ -4,9 +4,9 @@
     a = INPUT;
     b = INPUT;
 
-    for (i is 1; i LE a AND i LE b; i is i SUM 1)
+    for (i = 1; i <= a AND i <= b; i = i SUM 1)
 
-        if (a %i == 0 AND b %i == 0)
+        if (a % i is 0 AND b % i is 0)
 
             gcd = i;
 

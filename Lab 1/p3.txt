@@ -9,10 +9,9 @@
 
     for (var i : Number = 1; i <= length; i = i + 1)
 	{
-
 		inputNumber = INPUT;
 
-        	sumOfNumbers = inputNumber + sumOfNumbers;
+        sumOfNumbers = inputNumber + sumOfNumbers;
 	}
 
         
