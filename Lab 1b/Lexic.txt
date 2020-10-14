@@ -12,38 +12,38 @@ Lexic:
 
         operators: + - * / % = < <= = => is AND OR !is
 
-        separators: space tab ; , () \n "" ''
+        separators:  ; , () "" '' {}
 
         reservedWords: ... char const else if Number INPUT var for OUTPUT : String Char {}
 
     b.identifiers
 
-        identifier ::= letter | letter{(letter | digit)}
+        identifier = letter | letter{(letter | digit)}
 
-        lowerLetter ::= "a" | "b" | ...| "z"
+        lowerLetter = "a" | "b" | ...| "z"
         
-        letter ::=  "A" | "B" | ...| "Z" | lowerLetter
+        letter =  "A" | "B" | ...| "Z" | lowerLetter
 
-        digit ::= "0" | "1" |...| "9"
+        digit = "0" | "1" |...| "9"
 
     c.constants
 
         1.number:
 
-            num := digit{num}
+            num = digit{num}
 
-            posNumber := num
+            posNumber = num
             
-            numConst := "-"num | posNumber
+            constNum = "-"num | posNumber
 
         2.character
 
-            character := 'letter'|'digit'
+            character = 'letter'|'digit'
 
         3.string
 
-            constchar := "string"
+            constChar = """string"""
 
-            string := lowerLetter{string}
+            string = {char}
 
-            char := letter|digit
+            char = letter|digit

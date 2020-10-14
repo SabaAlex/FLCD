@@ -1,41 +1,41 @@
-program ::= cmpdstmt
+program = cmpdstmt
 
-declList ::=  "var" (declaration | declareAndAsignStmt) {"," (declaration | declareAndAsignStmt)}
+declList =  "var" (declaration | declareAndAsignStmt) {"," (declaration | declareAndAsignStmt)}
 
-declaration ::= identifier ":" type
+declaration = identifier ":" type
 
-declareAndAsignStmt ::= declaration "=" expression
+declareAndAsignStmt = declaration "=" expression
 
-typeSimple ::= "String" | "Char" | "Number"
+typeSimple = "String" | "Char" | "Number"
 
-arrayDecl ::= typeSimple"..." "(" posNumber ")"
+arrayDecl = typeSimple"..." "(" posNumber ")"
 
-type  ::= typeSimple | arrayDecl
+type  = typeSimple | arrayDecl
 
-cmpdStmt ::= "{" stmtlist "}"
+cmpdStmt = "{" stmtlist "}"
 
-stmtlist ::= (stmt | stmt stmtlist)
+stmtlist = (stmt | stmt stmtlist)
 
-stmt ::= (simplStmt ";" | declList ";" | structstmt)
+stmt = (simplStmt ";" | declList ";" | structstmt)
 
-simplStmt ::= assignStmt | iostmt
+simplStmt = assignStmt | iostmt
 
-assignStmt ::= identifier "=" expression
+assignStmt = identifier "=" expression
 
-expression ::= expression ("+"|"-") term | term
+expression = expression ("+"|"-") term | term
 
-term ::= term ("*" | "/" | "%") factor | factor
+term = term ("*" | "/" | "%") factor | factor
 
-factor ::= "(" expression ")" | identifier | const
+factor = "(" expression ")" | identifier | const
 
-ioStmt ::= "INPUT" | "OUTPUT" " " (identifier | const)
+ioStmt = "INPUT" | "OUTPUT" " " (identifier | const)
 
-structStmt ::= ifStmt | forStmt
+structStmt = ifStmt | forStmt | cmpdStmt
 
-ifStmt ::= "if(" condition ")" (stmt | cmpdStmt) "else" (stmt | cmpdStmt)
+ifStmt = "if(" condition ")" (stmt | cmpdStmt) "else" (stmt | cmpdStmt)
 
-forStmt ::= "for(" (assignStmt | declList) condition ";" assignStmt ")" (stmt | cmpdStmt)
+forStmt = "for(" (assignStmt | declList) condition ";" assignStmt ")" (stmt | cmpdStmt)
 
-condition ::= expression RELATION expression
+condition = expression RELATION expression
 
-RELATION ::= "<" | "<=" | "is" | "!is" | ">=" | ">" | "AND" | "OR"
+RELATION = "<" | "<=" | "is" | "!is" | ">=" | ">" | "AND" | "OR"

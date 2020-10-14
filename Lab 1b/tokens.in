@@ -12,9 +12,6 @@ OUTPUT
 } 
 AND 
 OR
-space 
-tab 
-
 ; 
 , 
 (
@@ -30,8 +27,10 @@ tab
 = 
 => 
 is
-""
-''
+"
+"
+'
+'
 String 
 Char 
 INPUT 
