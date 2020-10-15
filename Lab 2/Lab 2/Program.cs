@@ -1,0 +1,14 @@
+﻿using System;
+using System.Linq;
+using System.Text;
+
+namespace Lab_2
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var symTbl = new SymbolTable(50);
+        }
+    }
+}
