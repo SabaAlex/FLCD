@@ -4,8 +4,6 @@ Alphabet:
 
     b. Decimal digits (0-9)
 
-    c. "_"
-
 Lexic:
 
     a.Special symbols, representing:

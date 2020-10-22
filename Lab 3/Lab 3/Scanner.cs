@@ -36,10 +36,20 @@ namespace Lab_3
 
         public bool IsIdentifierOrConstant(string token)
         {
-            ///digit
-            if (Regex.IsMatch(token, @"(?<=-)/d+|/d+"))
+            ///Constants
+            ///Digit
+            if (Regex.IsMatch(token, "(?<=-)/d+|/d+"))
                 return true;
-            else if(Regex.IsMatch(token, @"(?<=')/d+|/d+"))
+            ///Character
+            else if (Regex.IsMatch(token, "(?<=')[a-zA-Z0-9](?=')"))
+                return true;
+            ///String
+            else if (Regex.IsMatch(token, "(?<=\")[a-zA-Z0-9]+(?=\")"))
+                return true;
+
+            ///Identifiers (starts with letter and after that any char from alphabet)
+            else if (Regex.IsMatch(token, @"^[a-zA-Z][\da-zA-Z]?$"))
+                return true;
 
             return false;
         }
@@ -62,7 +72,7 @@ namespace Lab_3
                     lineString.Split(new char[] { ' ', '\n' }, StringSplitOptions.RemoveEmptyEntries)
                         .ToArray().ToList().ForEach(tokens => 
                         {
-                            var patern = @"^[a-zA-Z0-9]+|OR|AND|is|!is|[<>]=|[(){};," + '"' + "<>*/+%=-]";
+                            var patern = "^[a-zA-Z0-9]+|OR|AND|is|!is|[<>]=|[(){};,\"<>*/+%=-]";
 
                             Regex.Split(tokens, patern)
                                 .ToList().ForEach(token => 
