@@ -4,10 +4,10 @@ using System.Runtime.CompilerServices;
 
 namespace Lab_2
 {
-    public class MyHashTable<K, V>
+    public class MyHashTable<K>
     {
         private readonly int size;
-        private readonly LinkedList<KeyValue<K, V>>[] items;
+        private readonly LinkedList<K>[] items;
         public Func<K, int> HashFunction { get; set; }
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace Lab_2
         public MyHashTable(int size)
         {
             this.size = size;
-            items = new LinkedList<KeyValue<K, V>>[size];
+            items = new LinkedList<K>[size];
         }
 
         /// <summary>
@@ -45,13 +45,13 @@ namespace Lab_2
         public HashPosition Find(K key)
         {
             int position = GetArrayPosition(key);
-            LinkedList<KeyValue<K, V>> linkedList = GetLinkedList(position);
+            LinkedList<K> linkedList = GetLinkedList(position);
 
             int listPosition = 0;
 
-            foreach (KeyValue<K, V> item in linkedList)
+            foreach (var item in linkedList)
             {
-                if (item.Key.Equals(key))
+                if (item.Equals(key))
                 {
                     return new HashPosition() {
                         BucketPosition = position,
@@ -69,11 +69,11 @@ namespace Lab_2
         /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
-        public void Add(K key, V value)
+        public void Add(K key)
         {
             int position = GetArrayPosition(key);
-            LinkedList<KeyValue<K, V>> linkedList = GetLinkedList(position);
-            KeyValue<K, V> item = new KeyValue<K, V>() { Key = key, Value = value };
+            LinkedList<K> linkedList = GetLinkedList(position);
+            var item = key;
             linkedList.AddLast(item);
         }
 
@@ -82,12 +82,12 @@ namespace Lab_2
         /// </summary>
         /// <param name="position"></param>
         /// <returns></returns>
-        private LinkedList<KeyValue<K, V>> GetLinkedList(int position)
+        private LinkedList<K> GetLinkedList(int position)
         {
-            LinkedList<KeyValue<K, V>> linkedList = items[position];
+            LinkedList<K> linkedList = items[position];
             if (linkedList == null)
             {
-                linkedList = new LinkedList<KeyValue<K, V>>();
+                linkedList = new LinkedList<K>();
                 items[position] = linkedList;
             }
 

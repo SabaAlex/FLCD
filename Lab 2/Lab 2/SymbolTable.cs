@@ -7,11 +7,11 @@ namespace Lab_2
 {
     public class SymbolTable
     {
-        private MyHashTable<string, object> hashTable;
+        private MyHashTable<string> hashTable;
 
         public SymbolTable(int size)
         {
-            hashTable = new MyHashTable<string, object>(size) {
+            hashTable = new MyHashTable<string>(size) {
                 HashFunction = hashString =>
                 {
                     var byteArray = Encoding.ASCII.GetBytes(hashString);
@@ -32,7 +32,7 @@ namespace Lab_2
             if (valueInHash.Valid())
                 return valueInHash;
 
-            hashTable.Add(token, null);
+            hashTable.Add(token);
 
             return hashTable.Find(token);
         }
