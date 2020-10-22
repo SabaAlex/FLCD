@@ -9,6 +9,9 @@ namespace Lab_2
         static void Main(string[] args)
         {
             var symTbl = new SymbolTable(50);
+
+            var symResult = symTbl.Position("a");
+            Console.WriteLine(symResult.Equals(symTbl.Position("a")));
         }
     }
 }

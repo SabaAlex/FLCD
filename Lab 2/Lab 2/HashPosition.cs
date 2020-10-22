@@ -12,6 +12,25 @@ namespace Lab_2
         public int BucketPosition { get; set; }
         public int ListPosition { get; set; }
 
+        public override bool Equals(object obj)
+        {
+            if ((obj == null) || !GetType().Equals(obj.GetType()))
+            {
+                return false;
+            }
+            else
+            {
+                var otherHashPosition = (HashPosition)obj;
+                return (BucketPosition == otherHashPosition.BucketPosition)
+                    && (ListPosition == otherHashPosition.ListPosition);
+            }
+        }
+
+        public override string ToString()
+        {
+            return $"Bucket: {BucketPosition}, ListPosition: {ListPosition}";
+        }
+
         public bool Valid()
         {
             return BucketPosition != -1;
