@@ -15,7 +15,7 @@ namespace Lab_2
                 HashFunction = hashString =>
                 {
                     var byteArray = Encoding.ASCII.GetBytes(hashString);
-                    return byteArray.ToList().Select(charByte => Convert.ToInt32(charByte)).Aggregate(0, (acc, x) => acc + x);
+                    return (byteArray.ToList().Select(charByte => Convert.ToInt32(charByte)).Aggregate(0, (acc, x) => acc + x) % size);
                 }
             };
         }

@@ -12,9 +12,9 @@ Lexic:
 
         operators: + - * / % = < <= = => is AND OR !is
 
-        separators:  ; , () "" '' {}
+        separators:  ; , ( ) " " ' ' { }
 
-        reservedWords: ... char const else if Number INPUT var for OUTPUT : String Char {}
+        reservedWords: ... char else if Number INPUT var for OUTPUT : String Char
 
     b.identifiers
 

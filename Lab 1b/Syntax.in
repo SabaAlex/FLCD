@@ -28,7 +28,7 @@ term = term ("*" | "/" | "%") factor | factor
 
 factor = "(" expression ")" | identifier | const
 
-ioStmt = "INPUT" | "OUTPUT" " " (identifier | const)
+ioStmt = "INPUT" | "OUTPUT" (identifier | const)
 
 structStmt = ifStmt | forStmt | cmpdStmt
 

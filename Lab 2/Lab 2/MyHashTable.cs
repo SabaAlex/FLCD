@@ -33,7 +33,7 @@ namespace Lab_2
         /// <returns></returns>
         private int GetArrayPosition(K key)
         {
-            int position = ToHashCode(key) % size;
+            int position = ToHashCode(key);
             return Math.Abs(position);
         }
 
