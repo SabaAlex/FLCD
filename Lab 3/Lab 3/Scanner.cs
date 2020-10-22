@@ -72,7 +72,13 @@ namespace Lab_3
                     lineString.Split(new char[] { ' ', '\n' }, StringSplitOptions.RemoveEmptyEntries)
                         .ToArray().ToList().ForEach(tokens => 
                         {
-                            var patern = "^[a-zA-Z0-9]+|OR|AND|is|!is|[<>]=|[(){};,\"<>*/+%=-]";
+                            var patern =
+                                "(?<=-)/d+|/d+|" +
+                                "(?<=')[a-zA-Z0-9](?=')|" +
+                                "(?<=\")[a-zA-Z0-9]+(?=\")|" +
+                                "OR|AND|is|!is|[<>]=|" +
+                                "[\'(){};,\"<>*/+%=-]" +
+                                "[a-zA-Z0-9]+";
 
                             Regex.Split(tokens, patern)
                                 .ToList().ForEach(token => 
