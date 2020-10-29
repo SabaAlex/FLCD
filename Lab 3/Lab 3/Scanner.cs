@@ -86,7 +86,6 @@ namespace Lab_3
         { 
             using (FileStream fs = File.Create(Path.Combine(OutputDirectory, PIFFile)))
             {
-                Console.WriteLine(ExceptionsResults);
                 byte[] info = new UTF8Encoding(true).GetBytes(PIF.ToString());
                 fs.Write(info, 0, info.Length);
             }
@@ -96,7 +95,6 @@ namespace Lab_3
         {
             using (FileStream fs = File.Create(Path.Combine(OutputDirectory, SymbotTableFile)))
             {
-                Console.WriteLine(ExceptionsResults);
                 byte[] info = new UTF8Encoding(true).GetBytes(SymbolTable.ToString());
                 fs.Write(info, 0, info.Length);
             }
@@ -106,7 +104,6 @@ namespace Lab_3
         {
             using (FileStream fs = File.Create(Path.Combine(OutputDirectory, ExceptionFile)))
             {
-                Console.WriteLine(ExceptionsResults);
                 byte[] info = new UTF8Encoding(true).GetBytes(ExceptionsResults);
                 fs.Write(info, 0, info.Length);
             }
