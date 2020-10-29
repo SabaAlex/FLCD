@@ -115,12 +115,12 @@ namespace Lab_3
 
         private static bool IsNumberConstant(string[] tokenList, int position)
         {
-            return !Regex.IsMatch(tokenList[position], "\\D");
+            return !Regex.IsMatch(tokenList[position], @"\D");
         }
 
         private static bool IsNegativeNumberConstant(string agregatedString)
         {
-            return Regex.IsMatch(agregatedString, @"((?<!(\d|[a-zA-Z]|\)))-\d+)$");
+            return Regex.IsMatch(agregatedString, "((?<!(\\d|[a-zA-Z]|\\)|'|\"))-\\d+)$");
         }
 
         private static bool IsChar(string agregatedString)
