@@ -263,7 +263,7 @@ namespace Lab_3
                 }
                 else
                 {
-                    LogError(lineCounter, AggregateListOfStrings(tokenList.Skip(position).ToList()));
+                    LogError(lineCounter, AggregateListOfStrings(tokenList.Skip(position - 1).ToList()));
                     position = tokenList.Length;
                     return;
                 }
@@ -291,7 +291,7 @@ namespace Lab_3
                 }
                 else
                 {
-                    LogError(lineCounter, AggregateListOfStrings(tokenList.Skip(position).ToList()));
+                    LogError(lineCounter, AggregateListOfStrings(tokenList.Skip(position - 1).ToList()));
                     position = tokenList.Length;
                     return;
                 }
