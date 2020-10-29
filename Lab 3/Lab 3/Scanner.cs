@@ -29,17 +29,7 @@ namespace Lab_3
                     "[():{}\'\";,<>*/+%=-]|\\.\\.\\.|" +
                     "\\s+";
 
-
-        private static string LastInserted = "";
-
-        private static void SetLastInserted(string value)
-            => LastInserted = value;
-
-        private static bool IsLastInsertedGood(string lastInsertedMatch)
-        { 
-            return lastInsertedMatch == LastInserted;
-        }
-
+        #region Scanner Pre-Algorithm
         public Scanner()
         {
             SymbolTable = new SymbolTable(769);
@@ -65,7 +55,7 @@ namespace Lab_3
                 while (!sr.EndOfStream)
                 {
                     var token = sr.ReadLine();
-                    if(string.IsNullOrWhiteSpace(token))
+                    if (string.IsNullOrWhiteSpace(token))
                     {
                         key = sr.ReadLine();
                         continue;
@@ -76,16 +66,131 @@ namespace Lab_3
             }
         }
 
+        #endregion
+
+        #region Scanner Utils
+
+        private static string LastInserted = "";
+
+        private static void SetLastInserted(string value)
+            => LastInserted = value;
+
+        private static bool IsLastInsertedGood(string lastInsertedMatch)
+        { 
+            return lastInsertedMatch == LastInserted;
+        }
+
+        #endregion
+
+        #region Scanner String Manipulation
+
         private string AggregateListOfStrings(List<string> strings)
         {
             return strings.Aggregate("", (acc, cur) => acc += cur);
         }
 
+        private static void LogError(int lineCounter, string agregatedString)
+        {
+            Console.WriteLine($"Lexical error at Line: {lineCounter} with Token: {agregatedString}");
+        }
+        public override string ToString()
+        {
+            return SymbolTable.ToString() + '\n' + PIF.ToString();
+        }
+
+        #endregion
+
+        #region Scanner Matchers
         private bool IsSeparatorOperatorReserved(string StringToAnalize)
         {
             return ClasifiedTokens["ReservedWords"].Contains(StringToAnalize) ||
                     ClasifiedTokens["Operators"].Contains(StringToAnalize) ||
                     ClasifiedTokens["Separators"].Contains(StringToAnalize);
+        }
+
+        private static bool IsIdentifier(string[] tokenList, int position)
+        {
+            return Regex.IsMatch(tokenList[position], @"^[a-zA-Z][\da-zA-Z]*$");
+        }
+
+        private static bool IsNumberConstant(string[] tokenList, int position)
+        {
+            return !Regex.IsMatch(tokenList[position], "\\D");
+        }
+
+        private static bool IsNegativeNumberConstant(string agregatedString)
+        {
+            return Regex.IsMatch(agregatedString, @"((?<!(\d|[a-zA-Z]|\)))-\d+)$");
+        }
+
+        private static bool IsChar(string agregatedString)
+        {
+            return Regex.IsMatch(agregatedString, "^(?<=\')[a-zA-Z\\d\\s](?=\')$");
+        }
+
+        private static bool IsString(string agregatedString)
+        {
+            return Regex.IsMatch(agregatedString, "^(?<=\")[a-zA-Z\\d\\s]*(?=\")$");
+        }
+
+        #endregion
+
+        #region Scanner Adding Logic
+
+        private void AddToken(string token)
+        {
+            var index = SymbolTable.Position(token);
+            PIF.GeneratePIF(token, index);
+        }
+
+        private void ChangeLast(string token)
+        {
+            var index = SymbolTable.Position(token);
+            PIF.ChangeLast(token, index);
+        }
+
+        #endregion
+
+        #region Scanner Algorithm
+
+        public void Scanning(string filePath)
+        {
+            if (!File.Exists(filePath))
+                throw new Exception("Invalid File!");
+
+            using (StreamReader streamReader = new StreamReader(filePath))
+            {
+                string lineString;
+                int lineCounter = 0;
+
+                while (!streamReader.EndOfStream)
+                {
+                    lineString = streamReader.ReadLine();
+
+                    var tokenList = Regex.Split(lineString, $"(?={patern})|(?<={patern})").Where(token => !(string.IsNullOrWhiteSpace(token) || string.IsNullOrEmpty(token))).ToArray();
+
+                    ComputeLine(lineCounter, tokenList);
+
+                    lineCounter++;
+                }
+            }
+        }
+
+        private void ComputeLine(int lineCounter, string[] tokenList)
+        {
+            for (int i = 0; i < tokenList.Length; i++)
+            {
+                var token = tokenList[i];
+
+                if (IsSeparatorOperatorReserved(token))
+                {
+                    PIF.GeneratePIF(token, new HashPosition() { BucketPosition = -1 });
+                    SetLastInserted(token);
+                    continue;
+                }
+                
+                TreatIdentifierOrConstant(tokenList, ref i, lineCounter);
+            }
         }
 
         public void TreatIdentifierOrConstant(string[] tokenList, ref int position, int lineCounter)
@@ -178,91 +283,6 @@ namespace Lab_3
             LogError(lineCounter, token);
         }
 
-        private static void LogError(int lineCounter, string agregatedString)
-        {
-            Console.WriteLine($"Lexical error at Line: {lineCounter} with Token: {agregatedString}");
-        }
-
-        private static bool IsIdentifier(string[] tokenList, int position)
-        {
-            return Regex.IsMatch(tokenList[position], @"^[a-zA-Z][\da-zA-Z]*$");
-        }
-
-        private static bool IsNumberConstant(string[] tokenList, int position)
-        {
-            return !Regex.IsMatch(tokenList[position], "\\D");
-        }
-
-        private static bool IsNegativeNumberConstant(string agregatedString)
-        {
-            return Regex.IsMatch(agregatedString, @"((?<!(\d|[a-zA-Z]|\)))-\d+)$");
-        }
-
-        private static bool IsChar(string agregatedString)
-        {
-            return Regex.IsMatch(agregatedString, "^(?<=\')[a-zA-Z\\d\\s](?=\')$");
-        }
-
-        private static bool IsString(string agregatedString)
-        {
-            return Regex.IsMatch(agregatedString, "^(?<=\")[a-zA-Z\\d\\s]*(?=\")$");
-        }
-
-        public override string ToString()
-        {
-            return SymbolTable.ToString() + '\n' + PIF.ToString();
-        }
-
-        private void AddToken(string token)
-        {
-            var index = SymbolTable.Position(token);
-            PIF.GeneratePIF(token, index);
-        }
-
-        private void ChangeLast(string token)
-        {
-            var index = SymbolTable.Position(token);
-            PIF.ChangeLast(token, index);
-        }
-
-        public void Scanning(string filePath)
-        {
-            if (!File.Exists(filePath))
-                throw new Exception("Invalid File!");
-
-            using (StreamReader streamReader = new StreamReader(filePath))
-            {
-                string lineString;
-                int lineCounter = 0;
-
-                while (!streamReader.EndOfStream)
-                {
-                    lineString = streamReader.ReadLine();
-
-                    var tokenList = Regex.Split(lineString, $"(?={patern})|(?<={patern})").Where(token => !(string.IsNullOrWhiteSpace(token) || string.IsNullOrEmpty(token))).ToArray();
-
-                    ComputeLine(lineCounter, tokenList);
-
-                    lineCounter++;
-                }
-            }
-        }
-
-        private void ComputeLine(int lineCounter, string[] tokenList)
-        {
-            for (int i = 0; i < tokenList.Length; i++)
-            {
-                var token = tokenList[i];
-
-                if (IsSeparatorOperatorReserved(token))
-                {
-                    PIF.GeneratePIF(token, new HashPosition() { BucketPosition = -1 });
-                    SetLastInserted(token);
-                    continue;
-                }
-                
-                TreatIdentifierOrConstant(tokenList, ref i, lineCounter);
-            }
-        }
+        #endregion
     }
 }
