@@ -1,3 +1,4 @@
+Operators
 +
 - 
 * 
@@ -13,6 +14,7 @@ is
 AND 
 OR
 
+Separators
 ; 
 , 
 (
@@ -22,6 +24,7 @@ OR
 {
 }
 
+ReservedWords
 ... 
 else 
 if 
@@ -33,5 +36,3 @@ OUTPUT
 String 
 Char 
 INPUT 
-identifier | 1
-const | 0

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace Lab_2
@@ -9,6 +10,13 @@ namespace Lab_2
         private readonly int size;
         private readonly LinkedList<K>[] items;
         public Func<K, int> HashFunction { get; set; }
+
+        public override string ToString()
+        {
+            return items.Aggregate("" , (acc, cur) =>
+                acc += $"{cur.Aggregate("", (acc, cur) => acc += cur.ToString() + "\n")}"
+            );
+        }
 
         /// <summary>
         /// Function that returns a hashable code

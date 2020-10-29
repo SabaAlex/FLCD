@@ -36,5 +36,10 @@ namespace Lab_2
 
             return hashTable.Find(token);
         }
+
+        public override string ToString()
+        {
+            return hashTable.ToString();
+        }
     }
 }

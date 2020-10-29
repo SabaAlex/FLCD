@@ -1,6 +1,7 @@
 {
-    var a : String, 1i : Number;
+    var a :-1 String, 1i : Number = 'asd123';
 
-    a is "My i string;
+    a is "My @is tring";
 
 }
+
