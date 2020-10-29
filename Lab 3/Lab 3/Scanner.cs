@@ -180,16 +180,26 @@ namespace Lab_3
 
         #region Scanner Adding Logic
 
-        private void AddToken(string token)
+        private void AddConstant(string token)
+        {
+            AddToken(token, "0");
+        }
+
+        private void AddIdentifier(string token)
+        {
+            AddToken(token, "1");
+        }
+
+        private void AddToken(string token, string tokenRepresentation)
         {
             var index = SymbolTable.Position(token);
-            PIF.GeneratePIF(token, index);
+            PIF.GeneratePIF(tokenRepresentation, index);
         }
 
         private void ChangeLast(string token)
         {
             var index = SymbolTable.Position(token);
-            PIF.ChangeLast(token, index);
+            PIF.ChangeLast("0", index);
         }
 
         #endregion
@@ -254,7 +264,7 @@ namespace Lab_3
                     var agregatedString = AggregateListOfStrings(tokenList.Skip(positionCopy - 1).Take(endIndex - positionCopy + 2).ToList());
                     if (IsString(agregatedString))
                     {
-                        AddToken(AggregateListOfStrings(tokenList.Skip(positionCopy).Take(endIndex - positionCopy + 1).ToList()));
+                        AddConstant(AggregateListOfStrings(tokenList.Skip(positionCopy).Take(endIndex - positionCopy + 1).ToList()));
                         return;
                     }
 
@@ -282,7 +292,7 @@ namespace Lab_3
                     var agregatedString = AggregateListOfStrings(tokenList.Skip(positionCopy - 1).Take(endIndex - positionCopy + 2).ToList());
                     if (IsChar(agregatedString))
                     {
-                        AddToken(AggregateListOfStrings(tokenList.Skip(positionCopy).Take(endIndex - positionCopy + 1).ToList()));
+                        AddConstant(AggregateListOfStrings(tokenList.Skip(positionCopy).Take(endIndex - positionCopy + 1).ToList()));
                         return;
                     }
 
@@ -313,7 +323,7 @@ namespace Lab_3
                     }
                 }
 
-                AddToken(token);
+                AddConstant(token);
                 return;
             }
 
@@ -321,7 +331,7 @@ namespace Lab_3
             ///identifiers
             if (IsIdentifier(tokenList, position))
             {
-                AddToken(token);
+                AddIdentifier(token);
                 return;
             }
 
