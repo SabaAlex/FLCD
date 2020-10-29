@@ -4,23 +4,34 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection.Emit;
+using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace Lab_3
 {
     public class Scanner
     {
         /// <summary>
-        /// a variant
+        /// a) variant
         /// One sym table for both
         /// </summary>
-        public SymbolTable SymbolTable { get; set; }
-        public PIF PIF { get; set; }
+        private SymbolTable SymbolTable { get; set; }
+        private PIF PIF { get; set; }
+
+        private static readonly string ExceptionFile = $"Errors.txt";
+
+        private static readonly string SymbotTableFile = $"SymbolTable.txt";
+
+        private static readonly string PIFFile = $"PIF.txt";
 
         private Dictionary<string, List<string>> ClasifiedTokens;
 
         private static readonly string ProjectDirectory =
             @"C:\Personal\Limbaje formale si tehnici de compilare\Lab 3\Lab 3";
+
+        private static readonly string OutputDirectory =
+            Directory.CreateDirectory(Path.Combine(ProjectDirectory, "Logs", $"Run-{DateTime.Now.ToFileTimeUtc()}")).FullName;
 
         string patern =
                     ///matches relational things
@@ -29,12 +40,13 @@ namespace Lab_3
                     "[():{}\'\";,<>*/+%=-]|\\.\\.\\.|" +
                     "\\s+";
 
+        private string ExceptionsResults = "";
+
         #region Scanner Pre-Algorithm
         public Scanner()
         {
             SymbolTable = new SymbolTable(769);
-            PIF = new PIF();
-            ///                                                   
+            PIF = new PIF();                                          
             ClasifiedTokens = new Dictionary<string, List<string>> {
                 { "Operators", new List<string>() },
                 { "Separators", new List<string>() },
@@ -68,6 +80,40 @@ namespace Lab_3
 
         #endregion
 
+        #region Scanner Output
+
+        private void OutputPIF()
+        { 
+            using (FileStream fs = File.Create(Path.Combine(OutputDirectory, PIFFile)))
+            {
+                Console.WriteLine(ExceptionsResults);
+                byte[] info = new UTF8Encoding(true).GetBytes(PIF.ToString());
+                fs.Write(info, 0, info.Length);
+            }
+        }
+
+        private void OutputSymbolTable()
+        {
+            using (FileStream fs = File.Create(Path.Combine(OutputDirectory, SymbotTableFile)))
+            {
+                Console.WriteLine(ExceptionsResults);
+                byte[] info = new UTF8Encoding(true).GetBytes(SymbolTable.ToString());
+                fs.Write(info, 0, info.Length);
+            }
+        }
+
+        private void OutputExceptions()
+        {
+            using (FileStream fs = File.Create(Path.Combine(OutputDirectory, ExceptionFile)))
+            {
+                Console.WriteLine(ExceptionsResults);
+                byte[] info = new UTF8Encoding(true).GetBytes(ExceptionsResults);
+                fs.Write(info, 0, info.Length);
+            }
+        }
+
+        #endregion
+
         #region Scanner Utils
 
         private static string LastInserted = "";
@@ -89,9 +135,9 @@ namespace Lab_3
             return strings.Aggregate("", (acc, cur) => acc += cur);
         }
 
-        private static void LogError(int lineCounter, string agregatedString)
+        private void LogError(int lineCounter, string agregatedString)
         {
-            Console.WriteLine($"Lexical error at Line: {lineCounter} with Token: {agregatedString}");
+            ExceptionsResults += $"Lexical error at Line: {lineCounter} with Token: {agregatedString}\n";
         }
         public override string ToString()
         {
@@ -174,6 +220,8 @@ namespace Lab_3
                     lineCounter++;
                 }
             }
+
+            Parallel.Invoke(() => OutputExceptions(), () => OutputPIF(), () => OutputSymbolTable());
         }
 
         private void ComputeLine(int lineCounter, string[] tokenList)
@@ -193,7 +241,7 @@ namespace Lab_3
             }
         }
 
-        public void TreatIdentifierOrConstant(string[] tokenList, ref int position, int lineCounter)
+        private void TreatIdentifierOrConstant(string[] tokenList, ref int position, int lineCounter)
         {
             var token = tokenList[position];
 
