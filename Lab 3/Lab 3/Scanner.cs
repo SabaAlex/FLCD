@@ -46,6 +46,7 @@ namespace Lab_3
         private string ExceptionsResults = "";
 
         #region Scanner Pre-Algorithm
+
         public Scanner()
         {
             SymbolTable = new SymbolTable(769);
@@ -230,6 +231,11 @@ namespace Lab_3
                     lineCounter++;
                 }
             }
+
+            if (ExceptionsResults == "")
+                Console.WriteLine("Lexical correct.");
+            else
+                Console.WriteLine("Lexical incorect, check Error file of the run.");
 
             Parallel.Invoke(() => OutputExceptions(), () => OutputPIF(), () => OutputSymbolTable());
         }
