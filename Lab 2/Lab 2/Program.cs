@@ -10,8 +10,12 @@ namespace Lab_2
         {
             var symTbl = new SymbolTable(50);
 
+            
+
             var symResult = symTbl.Position("a");
             Console.WriteLine(symResult.Equals(symTbl.Position("a")));
+
+            Console.WriteLine(symTbl.ToString());
         }
     }
 }

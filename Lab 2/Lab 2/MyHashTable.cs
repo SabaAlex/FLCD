@@ -14,7 +14,7 @@ namespace Lab_2
         public override string ToString()
         {
             return items.Aggregate("" , (acc, cur) =>
-                acc += $"{cur.Aggregate("", (acc, cur) => acc += cur.ToString() + "\n")}"
+                acc += cur != null ? $"{cur.Aggregate("", (acc, cur) => acc += cur.ToString() + "\n")}" : ""
             );
         }
 

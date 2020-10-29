@@ -26,7 +26,7 @@ namespace Lab_3
                     ///matches relational things
                     "OR|AND|is|!is|[<>]=|" +
                     ///separators plus operators and remainint relational operators
-                    "[():{}\'\";,<>*/+%=-]|" +
+                    "[():{}\'\";,<>*/+%=-]|\\.\\.\\.|" +
                     "\\s+";
 
 
@@ -88,7 +88,7 @@ namespace Lab_3
                     ClasifiedTokens["Separators"].Contains(StringToAnalize);
         }
 
-        public bool IsIdentifierOrConstant(string[] tokenList, ref int position)
+        public void TreatIdentifierOrConstant(string[] tokenList, ref int position, int lineCounter)
         {
             var token = tokenList[position];
 
@@ -102,16 +102,22 @@ namespace Lab_3
 
                     position = endIndex - 1;
                     var agregatedString = AggregateListOfStrings(tokenList.Skip(positionCopy - 1).Take(endIndex - positionCopy + 2).ToList());
-                    if (Regex.IsMatch(agregatedString, "^(?<=\")[a-zA-Z\\d\\s]*(?=\")$"))
+                    if (IsString(agregatedString))
                     {
                         AddToken(AggregateListOfStrings(tokenList.Skip(positionCopy).Take(endIndex - positionCopy + 1).ToList()));
-                        return true;
+                        return;
                     }
 
-                    return false;
+                    LogError(lineCounter, agregatedString);
+                    return;
                 }
                 else
-                    return false;
+                {
+                    LogError(lineCounter, AggregateListOfStrings(tokenList.Skip(position).ToList()));
+                    position = tokenList.Length;
+                    return;
+                }
+
             }
             ///chars
             else if (IsLastInsertedGood("\'"))
@@ -124,31 +130,82 @@ namespace Lab_3
                     position = endIndex - 1;
 
                     var agregatedString = AggregateListOfStrings(tokenList.Skip(positionCopy - 1).Take(endIndex - positionCopy + 2).ToList());
-                    if (Regex.IsMatch(agregatedString, "^(?<=\')[a-zA-Z\\d\\s](?=\')$"))
+                    if (IsChar(agregatedString))
                     {
                         AddToken(AggregateListOfStrings(tokenList.Skip(positionCopy).Take(endIndex - positionCopy + 1).ToList()));
-                        return true;
+                        return;
                     }
 
-                    return false;
+                    LogError(lineCounter, agregatedString);
+                    return;
                 }
                 else
-                    return false;
+                {
+                    LogError(lineCounter, AggregateListOfStrings(tokenList.Skip(position).ToList()));
+                    position = tokenList.Length;
+                    return;
+                }
 
             }
             ///digits
-            else if (!Regex.IsMatch(tokenList[position], "\\D"))
+            else if (IsNumberConstant(tokenList, position))
             {
                 if (IsLastInsertedGood("-"))
                 {
+                    var positionCopy = position;
 
+                    var agregatedString = AggregateListOfStrings(tokenList.Skip(positionCopy - 2).Take(3).ToList());
+
+                    if (IsNegativeNumberConstant(agregatedString))
+                    {
+                        ChangeLast(AggregateListOfStrings(tokenList.Skip(positionCopy - 1).Take(2).ToList()));
+                        return;
+                    }
                 }
-                
-                return true;
+
+                AddToken(token);
+                return;
             }
 
+
             ///identifiers
+            if (IsIdentifier(tokenList, position))
+            {
+                AddToken(token);
+                return;
+            }
+
+            LogError(lineCounter, token);
+        }
+
+        private static void LogError(int lineCounter, string agregatedString)
+        {
+            Console.WriteLine($"Lexical error at Line: {lineCounter} with Token: {agregatedString}");
+        }
+
+        private static bool IsIdentifier(string[] tokenList, int position)
+        {
             return Regex.IsMatch(tokenList[position], @"^[a-zA-Z][\da-zA-Z]*$");
+        }
+
+        private static bool IsNumberConstant(string[] tokenList, int position)
+        {
+            return !Regex.IsMatch(tokenList[position], "\\D");
+        }
+
+        private static bool IsNegativeNumberConstant(string agregatedString)
+        {
+            return Regex.IsMatch(agregatedString, @"((?<!(\d|[a-zA-Z]|\)))-\d+)$");
+        }
+
+        private static bool IsChar(string agregatedString)
+        {
+            return Regex.IsMatch(agregatedString, "^(?<=\')[a-zA-Z\\d\\s](?=\')$");
+        }
+
+        private static bool IsString(string agregatedString)
+        {
+            return Regex.IsMatch(agregatedString, "^(?<=\")[a-zA-Z\\d\\s]*(?=\")$");
         }
 
         public override string ToString()
@@ -160,6 +217,12 @@ namespace Lab_3
         {
             var index = SymbolTable.Position(token);
             PIF.GeneratePIF(token, index);
+        }
+
+        private void ChangeLast(string token)
+        {
+            var index = SymbolTable.Position(token);
+            PIF.ChangeLast(token, index);
         }
 
         public void Scanning(string filePath)
@@ -176,31 +239,29 @@ namespace Lab_3
                 {
                     lineString = streamReader.ReadLine();
 
-                    var tokenList = Regex.Split(lineString, $"(?={patern})|(?<={patern})").Where(token => token != " " && token != "").ToArray();
+                    var tokenList = Regex.Split(lineString, $"(?={patern})|(?<={patern})").Where(token => !(string.IsNullOrWhiteSpace(token) || string.IsNullOrEmpty(token))).ToArray();
 
-                    for (int i = 0; i < tokenList.Length; i++)
-                    {
-                        var token = tokenList[i];
-
-                        if (IsSeparatorOperatorReserved(token))
-                        {
-                            PIF.GeneratePIF(token, new HashPosition() { BucketPosition = -1 });
-                            SetLastInserted(token);
-                        }
-                        else if (IsIdentifierOrConstant(tokenList, ref i))
-                        {
-                            AddToken(token);
-                        }
-                        else
-                        {
-                            if (token == "" || token == " ")
-                                continue;
-                            Console.WriteLine($"Lexical error at Line: {lineCounter} with Token: {token}");
-                        }            
-                    }
+                    ComputeLine(lineCounter, tokenList);
 
                     lineCounter++;
                 }
+            }
+        }
+
+        private void ComputeLine(int lineCounter, string[] tokenList)
+        {
+            for (int i = 0; i < tokenList.Length; i++)
+            {
+                var token = tokenList[i];
+
+                if (IsSeparatorOperatorReserved(token))
+                {
+                    PIF.GeneratePIF(token, new HashPosition() { BucketPosition = -1 });
+                    SetLastInserted(token);
+                    continue;
+                }
+                
+                TreatIdentifierOrConstant(tokenList, ref i, lineCounter);
             }
         }
     }

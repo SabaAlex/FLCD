@@ -15,6 +15,9 @@ namespace Lab_3
             Tuples = new List<Tuple<string, HashPosition>>();
         }
 
+        public void ChangeLast(string token, HashPosition hashPosition) =>
+            Tuples[Tuples.Count - 1] = new Tuple<string, HashPosition>(token, hashPosition);
+
         public void GeneratePIF(string token, HashPosition hashPosition) =>
             Tuples.Add(new Tuple<string, HashPosition>(token, hashPosition));
 
