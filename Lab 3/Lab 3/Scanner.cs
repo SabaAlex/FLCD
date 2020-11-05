@@ -16,6 +16,9 @@ namespace Lab_3
         /// a) variant
         /// One sym table for both
         /// </summary>
+        /// 
+        ///Na, poti face PR
+
         private SymbolTable SymbolTable { get; set; }
         private PIF PIF { get; set; }
 
