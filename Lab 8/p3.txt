@@ -1,0 +1,19 @@
+{
+    var number : Number...(10), length : Number, counter : Number;
+
+    length is INPUT;
+
+    var sumOfNumbers : Number;
+
+    var inputNumber : Number;
+
+    for (var i : Number = 1; i <= length; i = i + 1)
+	{
+		inputNumber = INPUT;
+
+        sumOfNumbers = inputNumber + sumOfNumbers;
+	}
+
+        
+    OUTPUT sumOfNumbers;
+}

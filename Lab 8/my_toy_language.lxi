@@ -1,0 +1,61 @@
+CIFRA		[0-9]
+IDENTIFICATOR	[a-zA-Z][\da-zA-Z]*
+NUMAR	    [0-9]+
+DELIMIT	    [;,:{}]
+OPERATOR    [<>*/+%=\-()\"\']
+STRING		["][^.*"]*["]
+CARACTER	"'"[^.]"'"
+
+%%
+
+"else"		printf( "%s\n", yytext );
+"if"		printf( "%s\n", yytext );
+"OUTPUT"		printf( "%s\n", yytext );
+"INPUT"		printf( "%s\n", yytext );
+"var"		printf( "%s\n", yytext );
+"for"   printf( "%s\n", yytext );
+
+"Char"		printf( "%s\n", yytext );
+"Number"		printf( "%s\n", yytext );
+"String"		printf( "%s\n", yytext );
+
+":"    printf( "%s\n", yytext );
+"..."  printf( "%s\n", yytext );
+"!is"	printf( "%s\n", yytext );
+"<="		printf( "%s\n", yytext );
+">="		printf( "%s\n", yytext );
+"is"   printf( "%s\n", yytext );
+"OR"		printf( "%s\n", yytext );
+"AND"	printf( "%s\n", yytext );
+
+{IDENTIFICATOR}     printf("%s\n", yytext );
+
+{NUMAR}    {
+		       printf("%d\n", atoi(yytext));
+		    }
+
+{OPERATOR}     printf("%s\n", yytext);
+
+{STRING}   printf("%s\n", yytext);
+
+{CARACTER}   printf("%s\n", yytext);
+
+{DELIMIT}   printf("%s\n", yytext);
+
+%%
+
+main( argc, argv )
+int argc;
+char **argv;
+    {
+        ++argv, --argc;	/* skip over program name */
+        if ( argc > 0 )
+            yyin = fopen( argv[0], "r" );
+        else
+            yyin = stdin;
+    yylex();
+    }
+
+#ifndef yywrap
+   yywrap() { return 1; }
+#endif

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Lab_4
+﻿namespace Lab_4
 {
     class Program
     {
@@ -8,12 +6,10 @@ namespace Lab_4
         {
             var ui = new UI()
             {
-                FA = new FA(@"C:\Personal\Limbaje formale si tehnici de compilare\Lab 4\Lab 4\FA.in"),
+                FA = new FA(@"C:\Personal\Limbaje formale si tehnici de compilare\Lab 4\Lab 4\FAInFiles\FA-identifiers.in"),
             };
 
             ui.Start();
         }
-
-
     }
 }

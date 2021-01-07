@@ -12,7 +12,7 @@ Lexic:
 
         separators:  ; , ( ) " " ' ' { }
 
-        reservedWords: ... char else if Number INPUT var for OUTPUT : String Char
+        reservedWords: ... else if Number INPUT var for OUTPUT : String Char
 
     b.identifiers
 
